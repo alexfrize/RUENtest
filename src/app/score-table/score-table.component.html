@@ -1,0 +1,22 @@
+<section class="score_table">
+	<div class="col-md-4">
+		<p class="score_table__text text-center">
+			Вопрос {{questionNumber}} из 50
+		</p>
+	</div>
+	<div class="col-md-4">
+		<p class="score_table__text__correct text-center">
+			Правильных ответов: {{rightAnswers}}
+		</p>
+	</div>
+	<div class="col-md-4">
+		<p class="score_table__text__wrong text-center">
+			Неправильных ответов: {{wrongAnswers}}
+		</p>
+	</div>
+	<div class="clearfix"></div>
+</section>
+
+<section class="results_block">
+	<span [ngClass]="{'glyphicon': true, 'glyphicon-ok': result, 'glyphicon-remove': !result}" *ngFor="let result of resultsTable"></span>
+</section>
