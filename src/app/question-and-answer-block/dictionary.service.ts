@@ -10,28 +10,22 @@ import "rxjs/add/operator/catch";
 @Injectable()
 export class DictionaryService {
   private error: any;
+  // private _url: string = 'app/question-and-answer-block/dictionary.json';
+  // private _url: string = 'app/question-and-answer-block/small_test_dict.json';
+  // private _url: string = 'http://localhost:3000/api/dict';
+  private _url: string = '/server/api/dict';
 	private dict : IDictionary[];
 	constructor(private _http: Http ) { }
 
   loadDictionary() : Observable<IDictionary[]> {
-    return this._http.get('app/question-and-answer-block/dictionary.json')
-    .map((response:Response) => <IDictionary[]>response.json())
-    .do(data => console.log(JSON.stringify(data)));
+    return this._http.get(this._url)
+    .map((response:Response) => {console.log("DATA1: response.json()\r\n", response.json()); return <IDictionary[]>response.json() })
+    .do(data => console.log("DATA from server:\r\n", JSON.stringify(data)));
+    // .do(data => console.log("DATA from server:\r\n", JSON.parse(data)));
     // .catch(this.handleError);
 	}
   
   handleError(error : Response) : void {
     console.log("ERROR: ", error);
   }
-
-/*
-  getProducts(): Observable <IProductInterface[]> {
-    return this._http.get(this._url)
-    .map ((response : Response) => <IProductInterface[]>response.json())
-    .do(data => console.log(JSON.stringify(data)))
-    .catch(this.handleError);
-
-  }
-*/
-
 } 

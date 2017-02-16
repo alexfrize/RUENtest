@@ -24,7 +24,7 @@ export class QuestionAndAnswerBlockComponent implements OnInit {
     ngOnInit() {
     	this._dictionaryService.loadDictionary()
     	.subscribe(
-    		dictionary => this.dictionary = dictionary,
+    		dictionary => { this.dictionary = dictionary; console.log("DDD==", dictionary);},
     		error => this.errorMessage = <any>error,
     		this.loadQuestion.bind(this));
     		// () => this.loadQuestion());
