@@ -46,9 +46,10 @@ export class QuestionAndAnswerBlockComponent implements OnInit {
 	private userAnswer : string;
 	private answersArray : string[] = [];
 	private noAnswer : boolean = false;
+	private wrongAnswer : boolean = false;
 	private errorMessage: any;
-
-	animState : string = 'visible';
+ 	private millisecondsToWait : number = 0; // If answer is wrong, app shows an error message and wait "millisecondsToWait" milliseconds
+	private animState : string = 'visible';
 
 	@Output() nextButtonClicked : EventEmitter<boolean> = new EventEmitter<boolean>(false);
 	
@@ -105,15 +106,19 @@ export class QuestionAndAnswerBlockComponent implements OnInit {
 
 		
 		if (this.userAnswer !== this.correctAnswer) {
-		alert (`Ответ указан неверно. 
-			Правильный ответ: ${this.correctAnswer}`);
-
+			this.wrongAnswer = true;
+			this.millisecondsToWait = 5000;
 		}
 		
-		this.animateTitleAndText();
-		setTimeout(() => this.loadQuestion(), 500);
-		setTimeout(() => this.animateTitleAndText(), 600);
-	
+		setTimeout(() => {
+			this.animateTitleAndText();
+			setTimeout(() => this.loadQuestion(), 500);
+			setTimeout(() => this.animateTitleAndText(), 600);
+			this.millisecondsToWait = 0;
+			this.wrongAnswer = false;
+		}, this.millisecondsToWait);
+		
+
 	}
 
 /*

@@ -14,6 +14,10 @@
   color: #ffacac;
 }
 
+.question_and_answer_block__wronganswer {
+  color: #ffacac;
+}
+
 .question_and_answer_block__answertext {
   padding-top: 60px;
   color: yellow; 
