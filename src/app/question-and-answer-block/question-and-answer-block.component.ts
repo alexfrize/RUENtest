@@ -1,12 +1,44 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { transition, trigger, state, style, animate, keyframes } from '@angular/core';
 import { DictionaryService } from './dictionary.service';
 import { IDictionary } from './dictionary.interface';
 
 @Component({
   selector: 'question-and-answer-block',
   templateUrl: './question-and-answer-block.component.html',
-  styleUrls: ['./question-and-answer-block.component.css']
+  styleUrls: ['./question-and-answer-block.component.css'],
+  animations: [
+  	trigger('answersAnimation', [
+  			state('visible', style({
+  				transform: 'translate(000px)',
+  				opacity: 1
+  			})),
+  			state('hidden', style({
+  				transform: 'translate(100px)',
+  				opacity: 0
+  			})),
+  			transition('visible => hidden', animate('300ms ease-in')),
+  			transition('hidden => visible', animate('300ms ease-out'))
+  		]),
+	trigger('titleAnimation', [
+  			state('visible', style({
+  				transform: 'translate(000px)',
+  				opacity: 1
+  			})),
+  			state('hidden', style({
+  				transform: 'translate(-100px)',
+  				opacity: 0
+  			})),
+  			transition('visible => hidden', animate('300ms ease-in-out')),
+  			transition('hidden => visible', animate('300ms ease-in-out'))
+  		])  	
+  ]
 })
+
+/*
+=============================== Main class functions and variables ===============================
+*/
+
 export class QuestionAndAnswerBlockComponent implements OnInit {
 	private dictionary : IDictionary[] = [];
 	private currentWord : string;
@@ -16,6 +48,8 @@ export class QuestionAndAnswerBlockComponent implements OnInit {
 	private noAnswer : boolean = false;
 	private errorMessage: any;
 
+	animState : string = 'visible';
+
 	@Output() nextButtonClicked : EventEmitter<boolean> = new EventEmitter<boolean>(false);
 	
 	constructor(private _dictionaryService : DictionaryService) {
@@ -24,10 +58,9 @@ export class QuestionAndAnswerBlockComponent implements OnInit {
     ngOnInit() {
     	this._dictionaryService.loadDictionary()
     	.subscribe(
-    		dictionary => { this.dictionary = dictionary; console.log("DDD==", dictionary);},
+    		dictionary => this.dictionary = dictionary,
     		error => this.errorMessage = <any>error,
     		this.loadQuestion.bind(this));
-    		// () => this.loadQuestion());
     }
 
     setAnswer(i : number) {
@@ -35,14 +68,15 @@ export class QuestionAndAnswerBlockComponent implements OnInit {
     	this.noAnswer = false; // flag, that indicates an error if button is clicked without answer
     }
 
+	
+/*
+=============================== Function that takes 5 random words from dictionary ===============================
+*/
 	loadQuestion() {
-		console.log('hi from loadQuestion()');
-		console.log(this.dictionary);
-		console.log(this.dictionary.length);
+		console.log('Текущая длина словаря: ',this.dictionary.length);
 
 		this.userAnswer = '-'; // '-' mean that there is no answer
 		let randomAnswerIndex = Math.floor(Math.random()*5);
-		console.log("this.dictionary from loadQuersion()", this.dictionary);
 		for (let i=0; i<5; i++) {
 			let arrayPointer=Math.floor(Math.random()*this.dictionary.length);
 			this.answersArray[i] = this.dictionary[arrayPointer].rusWord;
@@ -58,6 +92,9 @@ export class QuestionAndAnswerBlockComponent implements OnInit {
 		}
 	}
 
+/*
+=============================== Loads new question if click event occurred ===============================
+*/
 	loadNextQuestion() {
 
 		if (this.userAnswer === '-') {
@@ -73,6 +110,17 @@ export class QuestionAndAnswerBlockComponent implements OnInit {
 
 		}
 		
-		this.loadQuestion();
+		this.animateTitleAndText();
+		setTimeout(() => this.loadQuestion(), 500);
+		setTimeout(() => this.animateTitleAndText(), 600);
+	
 	}
+
+/*
+=============================== Function that starts animation of title and answers text ===============================
+*/  
+	animateTitleAndText() {
+		this.animState = (this.animState === 'visible' ? 'hidden' : 'visible');
+	}
+
 }

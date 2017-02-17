@@ -1,6 +1,6 @@
 <section *ngIf="dictionary" class="question_and_answer_block">
-	<p class="question_and_answer_block__questiontext text-center">Укажите перевод слова: «{{currentWord}}»</p>
-	<p *ngFor="let answer of answersArray; let i=index"><input type="radio" name="useranswer" (click)="setAnswer(i)"> {{answer}}</p>
+	<p [@titleAnimation]='animState' class="question_and_answer_block__questiontext text-center">Укажите перевод слова: «{{currentWord}}»</p>
+	<p [@answersAnimation]='animState' *ngFor="let answer of answersArray; let i=index"><input type="radio" name="useranswer" (click)="setAnswer(i)"> {{answer}}</p>
 	<p class="question_and_answer_block__errortext text-center" *ngIf="noAnswer">Пожалуйста, укажите ответ!</p>
 	<p class="question_and_answer_block__answertext text-right">Ваш ответ: <span *ngIf="userAnswer!='-'">«{{userAnswer}}»</span> <span *ngIf="userAnswer==='-'"> - </span></p>
 	<form class="text-right">

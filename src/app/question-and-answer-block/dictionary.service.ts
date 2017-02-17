@@ -19,10 +19,9 @@ export class DictionaryService {
 
   loadDictionary() : Observable<IDictionary[]> {
     return this._http.get(this._url)
-    .map((response:Response) => {console.log("DATA1: response.json()\r\n", response.json()); return <IDictionary[]>response.json() })
-    .do(data => console.log("DATA from server:\r\n", JSON.stringify(data)));
-    // .do(data => console.log("DATA from server:\r\n", JSON.parse(data)));
-    // .catch(this.handleError);
+    .map((response:Response) => <IDictionary[]>response.json())
+    .do(data => JSON.stringify(data));
+    //.catch(this.handleError);
 	}
   
   handleError(error : Response) : void {

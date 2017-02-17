@@ -18,5 +18,5 @@
 </section>
 
 <section class="results_block">
-	<span [ngClass]="{'glyphicon': true, 'glyphicon-ok': result, 'glyphicon-remove': !result}" *ngFor="let result of resultsTable"></span>
+	<span [@resultsAnimation]="animState" [ngClass]="{'glyphicon': true, 'glyphicon-ok': result, 'glyphicon-remove': !result}" *ngFor="let result of resultsTable"></span>
 </section>
